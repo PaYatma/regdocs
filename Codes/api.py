@@ -6,12 +6,13 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 #engine = create_engine('postgresql://postgres:mdclinicals@localhost/regulatory_docs')
+#SQLALCHEMY_DATABASE_URI = 'mysql://root:mdclinicals@localhost/linh'
 engine = create_engine('mysql://root:mdclinicals@localhost/linh')
 
 
 @app.route('/')
 def mydocs():
-    return render_template('temp.html')
+    return render_template('index.html')
 
 
 @app.route("/api/data", methods=["POST","GET"])
