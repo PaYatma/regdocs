@@ -12,7 +12,7 @@ mydf["Note"].fillna(".", inplace=True)
 
 # Split all row in a single list
 mytuples = [tuple(mydf.iloc[i]) for i in range(mydf.shape[0])]
-
+mytuples[0]
 # Connect to the DATABASE
 """conn = psycopg2.connect(host="localhost",
                         user="postgres",
