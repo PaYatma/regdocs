@@ -3,19 +3,19 @@ import pandas as pd
 from flask import Flask, render_template, request, jsonify
 from sqlalchemy import create_engine
 
-app = Flask(__name__)
+regdocs = Flask(__name__)
 
 #engine = create_engine('postgresql://postgres:mdclinicals@localhost/regulatory_docs')
 #SQLALCHEMY_DATABASE_URI = 'mysql://root:mdclinicals@localhost/linh'
 engine = create_engine('mysql://root:mdclinicals@localhost/linh')
 
 
-@app.route('/')
+@regdocs.route('/')
 def mydocs():
     return render_template('index.html')
 
 
-@app.route("/api/data", methods=["POST","GET"])
+@regdocs.route("/api/data", methods=["POST","GET"])
 def ajaxfile():
     try:
         conn = engine.raw_connection()
@@ -122,4 +122,4 @@ def ajaxfile():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    regdocs.run(debug=False, host="0.0.0.0", port=5000)

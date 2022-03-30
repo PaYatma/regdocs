@@ -3,6 +3,9 @@ import pandas as pd
 import unittest
 import psycopg2
 import mysql.connector
+from mysql.connector import errorcode
+from sqlalchemy import create_engine
+
 
 # Import data
 data = pd.read_csv("Codes/data/global_tab.csv")
@@ -10,16 +13,48 @@ data = pd.read_csv("Codes/data/global_tab.csv")
 #Columns name
 cols = ['Code', 'Country', 'Study', 'Tag', 'Created', 'Submission', 'Documents', 'Note']
 
+# create engine to connect into databases
+engine = create_engine('mysql://root:mdclinicals@localhost/linh')
 
-"""
-conn_mysql = mysql.connector.connect(host="localhost",
-                        user="root",
-                        password="mdclinicals",
-                        database="linh")
-first_val = "('AT', 'Austria', 'Pre-Market', 1.0, '2022-03-14', 'Competent Authority', 'Application Form ', 'Download from webpage: https://applicationform.basg.gv.at/mpgform/faces/main. In PDF (signed electronically or scanned signed original) and XML ')"
-"""
+# function to test databases
+def db_read(query, params=None):
+    try:
+        cnx = engine.raw_connection()
+        cursor = cnx.cursor()
+        if params:
+            cursor.execute(query, params)
+        else:
+            cursor.execute(query)
 
+        entries = cursor.fetchall()
+
+        content = []
+        for entry in entries:
+            content.append(entry)
+
+        return content
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("User authorization error")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database doesn't exist")
+        else:
+            print(err)
+
+    finally:
+        cursor.close()
+        cnx.close()
+        print("Connection closed")
+
+res = db_read("select * from Documents")
+print(db_read("Select VERSION()") == [('8.0.28',)])
+
+'''
+
+# class with all functions we want to test
 class TestImportInsert(unittest.TestCase):
+
     def test_import(self):
         assert data.shape == (2274, 8)
 
@@ -32,8 +67,11 @@ class TestImportInsert(unittest.TestCase):
         self.assertIn('Documents', data.columns)
         self.assertIn('Note', data.columns)
 
-  
+
+    def test_connexion(self):
+        assert len(res) == 2274
+
 
 
 if __name__ == '__main__':
-    unittest.main()
+    unittest.main()'''
