@@ -27,8 +27,7 @@ def ajaxfile():
             rowperpage = int(request.form['length'])
             searchValue = request.form["search[value]"]
 
-            print(request.form)
-
+            # Retreive filters
             searchcol0 = "%{}%".format(request.form['columns[0][search][value]'])
             searchcol1 = "%{}%".format(request.form['columns[1][search][value]'])
             searchcol2 = "%{}%".format(request.form['columns[2][search][value]'])
@@ -47,11 +46,9 @@ def ajaxfile():
             cursor.execute("select count(*) from Documents")
             rsallcount = cursor.fetchone()
             totalRecords = rsallcount[0]
-            print(totalRecords) 
 
             ## Total number of records with filtering
             likeString = "%{}%".format(searchValue)
-            print(likeString)
 
             cursor.execute('''SELECT count(*) as allcount from Documents WHERE Code LIKE %s
                                      OR Study LIKE %s  OR Country LIKE %s OR Submission LIKE %s''',
