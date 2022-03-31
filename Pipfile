@@ -43,6 +43,7 @@ PyMySQL = "==1.0.2"
 SQLAlchemy = "==1.4.32"
 Werkzeug = "==2.1.0"
 pypiwin32 = "*"
+setuptools = "*"
 
 [dev-packages]
 
