@@ -6,7 +6,6 @@ from sqlalchemy import create_engine
 regdocs = Flask(__name__)
 
 #engine = create_engine('postgresql://postgres:mdclinicals@localhost/regulatory_docs')
-#SQLALCHEMY_DATABASE_URI = 'mysql://root:mdclinicals@localhost/linh'
 engine = create_engine('mysql://root:mdclinicals@localhost/linh')
 
 
